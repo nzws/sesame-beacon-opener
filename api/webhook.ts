@@ -30,10 +30,16 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
 
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
+    if (!allowUsers.includes(event.source.userId)) {
+      console.warn('not allowed user:', event.source);
+      continue;
+    }
+
     if (
-      event.type !== 'beacon' ||
-      event.beacon.type !== 'enter' ||
-      !allowUsers.includes(event.source.userId)
+      !(
+        (event.type === 'beacon' && event.beacon.type !== 'enter') ||
+        (event.type === 'message' && event.message.text === 'unlock')
+      )
     ) {
       continue;
     }
