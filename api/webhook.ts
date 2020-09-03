@@ -44,36 +44,33 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       continue;
     }
 
-    const {
-      body
-    }: {
-      body: {
-        [key in string]: string;
-      };
-    } = await got.post(
-      `https://api.candyhouse.co/public/sesame/${process.env.SESAME_ID}`,
-      {
-        json: {
-          command: 'unlock'
-        },
-        headers: {
-          Authorization: process.env.SESAME_API_KEY
-        },
-        responseType: 'json'
-      }
-    );
+    try {
+      await got.post(
+        `https://api.candyhouse.co/public/sesame/${process.env.SESAME_ID}`,
+        {
+          json: {
+            command: 'unlock'
+          },
+          headers: {
+            Authorization: process.env.SESAME_API_KEY
+          },
+          responseType: 'json'
+        }
+      );
 
-    console.log(body);
-    if (body.error) {
-      client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: `Error: ${body.error}`
-      });
-    } else {
       client.replyMessage(event.replyToken, {
         type: 'text',
         text: `Unlocked!`
       });
+    } catch (e) {
+      if (e.response.body.error) {
+        client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: `Error: ${e.response.body.error}`
+        });
+      }
+
+      throw e;
     }
   }
 
