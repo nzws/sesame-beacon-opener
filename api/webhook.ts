@@ -1,3 +1,4 @@
+import got from 'got';
 import { NowRequest, NowResponse } from '@vercel/node';
 import { middleware } from '@line/bot-sdk';
 
@@ -33,7 +34,20 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       continue;
     }
 
-    console.log('worked!');
+    const { body } = await got.post(
+      `https://api.candyhouse.co/public/sesame/${process.env.SESAME_ID}`,
+      {
+        json: {
+          command: 'unlock'
+        },
+        headers: {
+          Authorization: process.env.SESAME_API_KEY
+        },
+        responseType: 'json'
+      }
+    );
+
+    console.log(body);
   }
 
   res.json({ status: 'success' });
