@@ -58,13 +58,13 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
         }
       );
 
-      client.replyMessage(event.replyToken, {
+      await client.replyMessage(event.replyToken, {
         type: 'text',
         text: `Unlocked!`
       });
     } catch (e) {
       if (e.response.body.error) {
-        client.replyMessage(event.replyToken, {
+        await client.replyMessage(event.replyToken, {
           type: 'text',
           text: `Error: ${e.response.body.error}`
         });
