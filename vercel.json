@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "regions": ["hnd1"],
+  "public": false,
+  "github": { "silent": true },
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://github.com/nzws/sesame-beacon-opener",
+      "permanent": false
+    }
+  ]
+}
