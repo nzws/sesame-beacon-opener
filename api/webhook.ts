@@ -17,6 +17,7 @@ const checkLineSignature = (req, res) =>
   });
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
+  console.log(req.body);
   await checkLineSignature(req, res);
 
   const events = req.body.events;
@@ -34,4 +35,6 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
 
     console.log('worked!');
   }
+
+  res.json({ status: 'success' });
 };
